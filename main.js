@@ -1,6 +1,9 @@
+// Node Modules
 const Discord = require('discord.js');
 require('dotenv').config();
 
+
+// Client Configuration
 const client = new Discord.Client({
     intents: [
         Discord.GatewayIntentBits.AutoModerationConfiguration,
@@ -31,8 +34,12 @@ const client = new Discord.Client({
     ]
 });
 
+
+// Ready Event
 client.once(Discord.Events.ClientReady, async (c) => {
     console.log('Ready as ' + c.user.tag);
 });
 
+
+// Client Token
 client.login(process.env.DiscordToken);
