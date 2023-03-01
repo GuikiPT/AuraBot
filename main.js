@@ -34,6 +34,15 @@ const client = new Discord.Client({
     ]
 });
 
+// Handler Loader
+['events'].forEach(async (handlerName) => {
+    try {
+        require(__dirname + '/handlers/events')(client);
+    }
+    catch (error) {
+        console.error(error.stack);
+    }
+});
 
 // Ready Event
 client.once(Discord.Events.ClientReady, async (c) => {
