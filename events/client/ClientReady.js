@@ -11,6 +11,6 @@ module.exports = {
     name: Discord.Events.ClientReady,
     once: true,
     async execute(client) {
-        console.log(`Ready as ` + client.user.tag);
+        console.info(`Ready as ` + client.user.tag);
     },
 };
