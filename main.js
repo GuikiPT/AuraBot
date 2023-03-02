@@ -50,6 +50,10 @@ const client = new Discord.Client({
     ]
 });
 
+// Client Collections
+client.msgCommands = new Discord.Collection();
+client.cooldowns = new Discord.Collection();
+
 // Handler Loader
 ['events'].forEach(async (handlerName) => {
     try {
