@@ -55,7 +55,7 @@ client.msgCommands = new Discord.Collection();
 client.cooldowns = new Discord.Collection();
 
 // Handler Loader
-['events'].forEach(async (handlerName) => {
+['events', 'msgCommands'].forEach(async (handlerName) => {
     try {
         require(__dirname + '/handlers/events')(client);
     }
