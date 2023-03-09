@@ -66,7 +66,7 @@ client.aliases = new Discord.Collection();
 client.categories = fs.readdirSync(`${__dirname}/commands/messages/`);
 
 // Handler Loader
-['events', 'messages'].forEach(async (handlerName) => {
+['events', 'messagesCmd'].forEach(async (handlerName) => {
     try {
         require(__dirname + '/handlers/' + handlerName)(client);
     } catch (error) {
