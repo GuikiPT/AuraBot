@@ -60,8 +60,9 @@ client.msgCommands = new Discord.Collection();
 client.cooldowns = new Discord.Collection();
 client.aliases = new Discord.Collection();
 client.categories = fs.readdirSync(`${__dirname}/commands/messages/`);
+client.interactions = new Discord.Collection();
 
-['events', 'messagesCmd'].forEach(async (handlerName) => {
+['events', 'messagesCmd', 'interactionsCmd'].forEach(async (handlerName) => {
     try {
         require(__dirname + '/handlers/' + handlerName)(client);
     } catch (error) {
