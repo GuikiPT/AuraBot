@@ -14,7 +14,7 @@ const prefix = "a!"
 
 module.exports = {
     name: Discord.Events.MessageCreate,
-    once: true,
+    once: false,
     async execute(client, message) {
         try {
             if (!message.content.startsWith(prefix) || message.author.bot) return;
@@ -22,17 +22,25 @@ module.exports = {
             const args = message.content.slice(prefix.length).trim().split(/ +/);
             const commandName = args.shift().toLowerCase();
 
-            const command = client.msgCommands.get(commandName)
-                || client.msgCommands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+            const command = client.msgCommands.get(commandName) ||
+                client.msgCommands.get(client.aliases.get(commandName));
 
             if (!command) return;
 
-            if (command.guildOnly && message.channel.type === 'dm') {
+            const channelType = Discord.ChannelType[message.channel.type]
+
+            if (command.guildOnly && channelType === 'DM') {
                 const notDmCommandEmbed = new Discord.EmbedBuilder()
                     .setColor('Red')
                     .setTitle('❌ | I can\'t execute that command inside DMs!')
+                    .setDescription('To run this command you need to run it inside a server.')
                     .setTimestamp()
-                return message.reply({ embeds: [notDmCommandEmbed], allowedMentions: { parse: [] } });
+                return message.reply({
+                    embeds: [notDmCommandEmbed],
+                    allowedMentions: {
+                        parse: []
+                    }
+                });
             }
 
             if (command.permissions) {
@@ -42,7 +50,12 @@ module.exports = {
                         .setColor('Red')
                         .setTitle('❌ | You don`t have permissions to execute this!')
                         .setTimestamp()
-                    return message.reply({ embeds: [notHavePermsEmbed], allowedMentions: { parse: [] } });
+                    return message.reply({
+                        embeds: [notHavePermsEmbed],
+                        allowedMentions: {
+                            parse: []
+                        }
+                    });
                 }
             }
 
@@ -55,10 +68,17 @@ module.exports = {
                 if (command.usage) {
                     noArgsEmbed.setDescription(`\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``)
                 }
-                return message.reply({ embeds: [noArgsEmbed], allowedMentions: { parse: [] } });
+                return message.reply({
+                    embeds: [noArgsEmbed],
+                    allowedMentions: {
+                        parse: []
+                    }
+                });
             }
 
-            const { cooldowns } = client;
+            const {
+                cooldowns
+            } = client;
 
             if (!cooldowns.has(command.name)) {
                 cooldowns.set(command.name, new Discord.Collection());
@@ -74,9 +94,14 @@ module.exports = {
                 if (now < expirationTime) {
                     const timeLeft = (expirationTime - now) / 1000;
                     const cooldownTimerEmbed = new Discord.EmbedBuilder()
-                        .setColor('Red')                            
+                        .setColor('Red')
                         .setTitle(`❌ | Please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`)
-                    return message.reply({ embeds: [cooldownTimerEmbed], allowedMentions: { parse: [] } });
+                    return message.reply({
+                        embeds: [cooldownTimerEmbed],
+                        allowedMentions: {
+                            parse: []
+                        }
+                    });
                 }
             }
 
@@ -89,8 +114,7 @@ module.exports = {
                 console.error(error.stack);
                 message.reply('there was an error trying to execute that command!');
             }
-        }
-        catch (error) {
+        } catch (error) {
             console.error(error.stack);
         }
     },

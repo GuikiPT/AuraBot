@@ -2,6 +2,7 @@
 const Discord = require('discord.js');
 const colors = require('colors/safe');
 const moment = require('moment');
+const fs = require('fs');
 require('dotenv').config();
 // https://olian04.gitbook.io/better-logging/
 require('better-logging')(console, {
@@ -53,13 +54,14 @@ const client = new Discord.Client({
 // Client Collections
 client.msgCommands = new Discord.Collection();
 client.cooldowns = new Discord.Collection();
+client.aliases = new Discord.Collection();
+client.categories = fs.readdirSync(`${__dirname}/commands/messages/`);
 
 // Handler Loader
 ['events', 'msgCommands'].forEach(async (handlerName) => {
     try {
-        require(__dirname + '/handlers/' + handlerName )(client);
-    }
-    catch (error) {
+        require(__dirname + '/handlers/' + handlerName)(client);
+    } catch (error) {
         console.error(error.stack);
     }
 });

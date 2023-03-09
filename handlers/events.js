@@ -1,7 +1,7 @@
 // Node Modules
 const fs = require('fs');
 
-module.exports = async function (client) {
+module.exports = async function(client) {
     try {
         /*
             Created event handler similar than discord.js v12 event handling system
@@ -21,8 +21,7 @@ module.exports = async function (client) {
                 }
             }
         }
-    }
-    catch (error) {
+    } catch (error) {
         console.error(error.stack);
     }
 
