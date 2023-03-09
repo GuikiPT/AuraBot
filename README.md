@@ -1,5 +1,5 @@
 <h1 align='center'>
-	<p><img src='https://raw.githubusercontent.com/GuikiPT/AuraBot/main/images/logo.png'/></p>
+	<p><img src='https://repository-images.githubusercontent.com/608189199/7d547c18-7532-430c-8e0a-7ad1cf028c96'/></p>
 	AuraBot
 </h1>
 
