@@ -1,11 +1,9 @@
-// Node Modules
 const Discord = require('discord.js');
 const colors = require('colors/safe');
 const moment = require('moment');
 const fs = require('fs');
 const figlet = require('figlet-promised');
 require('dotenv').config();
-// https://olian04.gitbook.io/better-logging/
 require('better-logging')(console, {
     format: ctx => `[${moment().format('HH:mm:ss')}] [${moment().format('L')}] ${ctx.type} >> ${ctx.msg}`,
     saveToFile: `${__dirname}/logs/${moment().format('YYYY')}/${moment().format('M')}/${moment().format('D')}.log`,
@@ -28,7 +26,6 @@ async function runFiglet() {
 }
 runFiglet();
 
-// Client Configuration
 const client = new Discord.Client({
     intents: [
         Discord.GatewayIntentBits.AutoModerationConfiguration,
@@ -59,13 +56,11 @@ const client = new Discord.Client({
     ]
 });
 
-// Client Collections
 client.msgCommands = new Discord.Collection();
 client.cooldowns = new Discord.Collection();
 client.aliases = new Discord.Collection();
 client.categories = fs.readdirSync(`${__dirname}/commands/messages/`);
 
-// Handler Loader
 ['events', 'messagesCmd'].forEach(async (handlerName) => {
     try {
         require(__dirname + '/handlers/' + handlerName)(client);
@@ -74,5 +69,4 @@ client.categories = fs.readdirSync(`${__dirname}/commands/messages/`);
     }
 });
 
-// Client Token
 client.login(process.env.DiscordToken);

@@ -1,16 +1,6 @@
-// Node Modules
 const Discord = require('discord.js');
 
-// Temporary Prefix
 const prefix = 'a!'
-
-/*
-    Event similar to
-    https://discordjs.guide/creating-your-bot/event-handling.html#individual-event-files
-    
-    Updated v12 event to v14 with some upgrades.
-    https://github.com/discordjs/guide/blob/v12/code-samples/command-handling/adding-features/12/index.js#L24-L83
-*/
 
 module.exports = {
     name: Discord.Events.MessageCreate,
