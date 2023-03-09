@@ -110,6 +110,13 @@ module.exports = {
 
             try {
                 command.execute(client, message, args);
+                
+                const guild = message.guild;
+                var guildInfo;
+                if (guild) guildInfo = '[' + message.guild.name + ' | ' + message.guild.id + ']';
+                else guildInfo = '';
+
+                console.log(`${guildInfo || ''} [${message.channel.name || 'DM'} | ${message.channel.id}] [${message.author.tag} | ${message.author.id}] [${command.name}]`);
             } catch (error) {
                 console.error(error.stack);
                 message.reply('there was an error trying to execute that command!');
