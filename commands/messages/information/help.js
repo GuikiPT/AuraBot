@@ -1,12 +1,12 @@
 const Discord = require('discord.js');
 
 module.exports = {
-    name: "help",
-    category: "information",
-    aliases: ["h", "commandinfo"],
+    name: 'help',
+    category: 'information',
+    aliases: ['h', 'commandinfo'],
     cooldown: 5,
-    usage: "help [Command]",
-    description: "Returns all Commmands, or one specific command",
+    usage: 'help [Command]',
+    description: 'Returns all Commmands, or one specific command',
 
     async execute(client, message, args) {
         try {
@@ -37,7 +37,7 @@ function getAll(client, message) {
 
     const commands = (category) => {
         return client.msgCommands.filter(cmd => cmd.category === category)
-            .map(cmd => `\`${cmd.name}\``).join(", ")
+            .map(cmd => `\`${cmd.name}\``).join(', ')
     }
     try {
         for (let i = 0; i < client.categories.length; i += 1) {
@@ -96,7 +96,7 @@ function getCMD(client, message, input) {
     if (cmd.aliases) {
         singleCmdEmbed.addFields({
             name: '***Aliases***',
-            value: `\`${cmd.aliases.map(a => `${a}`).join("\`, \`")}\``
+            value: `\`${cmd.aliases.map(a => `${a}`).join('\`, \`')}\``
         })
     }
 

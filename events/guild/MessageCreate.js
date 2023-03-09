@@ -2,7 +2,7 @@
 const Discord = require('discord.js');
 
 // Temporary Prefix
-const prefix = "a!"
+const prefix = 'a!'
 
 /*
     Event similar to

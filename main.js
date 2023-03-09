@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 const colors = require('colors/safe');
 const moment = require('moment');
 const fs = require('fs');
+const figlet = require('figlet-promised');
 require('dotenv').config();
 // https://olian04.gitbook.io/better-logging/
 require('better-logging')(console, {
