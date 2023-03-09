@@ -58,9 +58,10 @@ function getAll(client, message) {
 
 function getCMD(client, message, input) {
     const singleCmdEmbed = new Discord.EmbedBuilder()
-    const cmd = client.msgCommands.get(input.toLowerCase()) || client.msgCommands.get(client.aliases.get(input.toLowerCase()));
+    const msgCmd = client.msgCommands.get(input.toLowerCase()) || client.msgCommands.get(client.aliases.get(input.toLowerCase()));
+    const interactionCmd = client.interactions.get(input.toLowerCase());
 
-    if (!cmd) {
+    if (!msgCmd) {
         const noCmdFoundEmbed = new Discord.EmbedBuilder()
             .setColor('Red')
             .setTitle(`❌ | No Information found for command **${input.toLowerCase()}**`)
@@ -70,40 +71,40 @@ function getCMD(client, message, input) {
         });
     }
 
-    if (cmd.name) {
+    if (msgCmd.name) {
         singleCmdEmbed.setColor('White')
-            .setTitle(`❓ | Detailed Information -> \`${cmd.name}\``)
+            .setTitle(`❓ | Detailed Information -> \`${msgCmd.name}\``)
             .addFields({
                 name: '***Command Name***',
-                value: `\`${cmd.name}\``
+                value: `\`${msgCmd.name}\``
             })
     }
 
-    if (cmd.description) {
+    if (msgCmd.description) {
         singleCmdEmbed.addFields({
             name: '***Description***',
-            value: `\`${cmd.description}\``
+            value: `\`${msgCmd.description}\``
         })
     }
 
-    if (cmd.category) {
+    if (msgCmd.category) {
         singleCmdEmbed.addFields({
             name: '***Category***',
-            value: `\`${cmd.category.charAt(0).toUpperCase() + cmd.category.slice(1)}\``
+            value: `\`${msgCmd.category.charAt(0).toUpperCase() + msgCmd.category.slice(1)}\``
         })
     }
 
-    if (cmd.aliases) {
+    if (msgCmd.aliases) {
         singleCmdEmbed.addFields({
             name: '***Aliases***',
-            value: `\`${cmd.aliases.map(a => `${a}`).join('\`, \`')}\``
+            value: `\`${msgCmd.aliases.map(a => `${a}`).join('\`, \`')}\``
         })
     }
 
-    if (cmd.cooldown) {
+    if (msgCmd.cooldown) {
         singleCmdEmbed.addFields({
             name: '***Cooldown***',
-            value: `\`${cmd.cooldown} Seconds\``
+            value: `\`${msgCmd.cooldown} Seconds\``
         })
     } else {
         singleCmdEmbed.addFields({
@@ -112,7 +113,7 @@ function getCMD(client, message, input) {
         })
     }
 
-    if (cmd.guildOnly) {
+    if (msgCmd.guildOnly) {
         singleCmdEmbed.addFields({
             name: '***Guild Only***',
             value: '`Yes`'
@@ -124,10 +125,10 @@ function getCMD(client, message, input) {
         })
     }
 
-    if (cmd.usage) {
+    if (msgCmd.usage) {
         singleCmdEmbed.addFields({
             name: '***Usage***',
-            value: `\`a!${cmd.name} ${cmd.usage}\``
+            value: `\`a!${msgCmd.name} ${msgCmd.usage}\``
         })
             .setFooter({
                 text: 'Syntax: <> = required, [] = optional'

@@ -4,6 +4,7 @@ module.exports = {
 	name: 'ping',
 	category: 'information',
 	description: 'Shows the current latency of the bot',
+	usage: '/ping',
 	data: new Discord.SlashCommandBuilder()
 		.setName('ping')
 		.setDescription('Shows the current latency of the bot'),
