@@ -13,15 +13,18 @@ for (const folder of interactionFolders) {
     }
 }
 
-const rest = new Discord.REST({ version: '10' }).setToken(process.env.DiscordToken);
+const rest = new Discord.REST({
+    version: '10'
+}).setToken(process.env.DiscordToken);
 
 (async () => {
     try {
         console.log(`Started refreshing ${commands.length} application (/) commands.`);
 
         const data = await rest.put(
-            Discord.Routes.applicationGuildCommands('1080492281615876167', '1033777057303371797'),
-            { body: commands },
+            Discord.Routes.applicationGuildCommands('1080492281615876167', '1033777057303371797'), {
+                body: commands
+            },
         );
 
         console.log(`Successfully reloaded ${data.length} application (/) commands.`);

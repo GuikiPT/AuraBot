@@ -127,9 +127,9 @@ function getCMD(client, message, input) {
 
     if (msgCmd.usage) {
         singleCmdEmbed.addFields({
-            name: '***Usage***',
-            value: `\`a!${msgCmd.name} ${msgCmd.usage}\``
-        })
+                name: '***Usage***',
+                value: `\`a!${msgCmd.name} ${msgCmd.usage}\``
+            })
             .setFooter({
                 text: 'Syntax: <> = required, [] = optional'
             })
