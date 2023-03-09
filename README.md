@@ -1,4 +1,6 @@
-# AuraBot
+<h1><center>AuraBot</center></h1>
+<h3><center>A simple but powerfull discord bot</center></h3>
+
 
 
 
