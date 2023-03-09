@@ -21,6 +21,13 @@ require('better-logging')(console, {
     },
 });
 
+
+async function runFiglet() {
+    const result = await figlet('AuraBot');
+    console.log(colors.rainbow('\n' + result));
+}
+runFiglet();
+
 // Client Configuration
 const client = new Discord.Client({
     intents: [
