@@ -1,4 +1,5 @@
-<h1  align='center'>
+<h1 align='center'>
+	<p><img src='https://raw.githubusercontent.com/GuikiPT/AuraBot/main/images/logo.png'/></p>
 	AuraBot
 </h1>
 
