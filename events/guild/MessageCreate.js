@@ -1,0 +1,97 @@
+// Node Modules
+const Discord = require('discord.js');
+
+// Temporary Prefix
+const prefix = "a!"
+
+/*
+    Event similar to
+    https://discordjs.guide/creating-your-bot/event-handling.html#individual-event-files
+    
+    Updated v12 event to v14 with some upgrades.
+    https://github.com/discordjs/guide/blob/v12/code-samples/command-handling/adding-features/12/index.js#L24-L83
+*/
+
+module.exports = {
+    name: Discord.Events.MessageCreate,
+    once: true,
+    async execute(client, message) {
+        try {
+            if (!message.content.startsWith(prefix) || message.author.bot) return;
+
+            const args = message.content.slice(prefix.length).trim().split(/ +/);
+            const commandName = args.shift().toLowerCase();
+
+            const command = client.msgCommands.get(commandName)
+                || client.msgCommands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+
+            if (!command) return;
+
+            if (command.guildOnly && message.channel.type === 'dm') {
+                const notDmCommandEmbed = new Discord.EmbedBuilder()
+                    .setColor('Red')
+                    .setTitle('❌ | I can\'t execute that command inside DMs!')
+                    .setTimestamp()
+                return message.reply({ embeds: [notDmCommandEmbed], allowedMentions: { parse: [] } });
+            }
+
+            if (command.permissions) {
+                const authorPerms = message.channel.permissionsFor(message.author);
+                if (!authorPerms || !authorPerms.has(command.permissions)) {
+                    const notHavePermsEmbed = new Discord.EmbedBuilder()
+                        .setColor('Red')
+                        .setTitle('❌ | You don`t have permissions to execute this!')
+                        .setTimestamp()
+                    return message.reply({ embeds: [notHavePermsEmbed], allowedMentions: { parse: [] } });
+                }
+            }
+
+            if (command.args && !args.length) {
+                const noArgsEmbed = new Discord.EmbedBuilder()
+                    .setColor('Red')
+                    .setTitle(`❌ | You didn't provide any arguments!`)
+                    .setTimestamp()
+
+                if (command.usage) {
+                    noArgsEmbed.setDescription(`\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``)
+                }
+                return message.reply({ embeds: [noArgsEmbed], allowedMentions: { parse: [] } });
+            }
+
+            const { cooldowns } = client;
+
+            if (!cooldowns.has(command.name)) {
+                cooldowns.set(command.name, new Discord.Collection());
+            }
+
+            const now = Date.now();
+            const timestamps = cooldowns.get(command.name);
+            const cooldownAmount = (command.cooldown || 3) * 1000;
+
+            if (timestamps.has(message.author.id)) {
+                const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+
+                if (now < expirationTime) {
+                    const timeLeft = (expirationTime - now) / 1000;
+                    const cooldownTimerEmbed = new Discord.EmbedBuilder()
+                        .setColor('Red')                            
+                        .setTitle(`❌ | Please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`)
+                    return message.reply({ embeds: [cooldownTimerEmbed], allowedMentions: { parse: [] } });
+                }
+            }
+
+            timestamps.set(message.author.id, now);
+            setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+
+            try {
+                command.execute(client, message, args);
+            } catch (error) {
+                console.error(error.stack);
+                message.reply('there was an error trying to execute that command!');
+            }
+        }
+        catch (error) {
+            console.error(error.stack);
+        }
+    },
+};
