@@ -1,1 +1,1 @@
-<font size='7'>AuraBot</font>
+<h1 align='center'>AuraBot</h1>
